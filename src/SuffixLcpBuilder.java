@@ -4,6 +4,42 @@ public class SuffixLcpBuilder {
 
     public static long lcpCharChecks = 0;
 
+    public static int[] buildKasaiLcp(String text, int[] suffixArr) {
+        lcpCharChecks = 0;
+        int n = text.length();
+        int[] lcp = new int[n];
+        if (n <= 1) return lcp;
+
+        int[] invRank = new int[n];
+        for (int i = 0; i < n; i++) {
+            invRank[suffixArr[i]] = i;
+        }
+
+        int commonLen = 0;
+        for (int i = 0; i < n; i++) {
+            int posInSa = invRank[i];
+            if (posInSa == n - 1) {
+                commonLen = 0;
+                continue;
+            }
+
+            int neighborIdx = suffixArr[posInSa + 1];
+            while (i + commonLen < n && neighborIdx + commonLen < n) {
+                lcpCharChecks++;
+                if (text.charAt(i + commonLen) == text.charAt(neighborIdx + commonLen)) {
+                    commonLen++;
+                } else {
+                    break;
+                }
+            }
+
+            lcp[posInSa] = commonLen;
+            if (commonLen > 0) {
+                commonLen--;
+            }
+        }
+        return lcp;
+    }
 
     public static int[] generateSuffixArray(String text) {
         int n = text.length();
