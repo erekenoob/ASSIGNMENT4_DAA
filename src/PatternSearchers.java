@@ -31,5 +31,30 @@ public class PatternSearchers {
         return hits;
     }
 
+    public static int[] buildBorderArray(String needle) {
+        int m = needle.length();
+        int[] border = new int[m];
+        int prevLen = 0;
+        int idx = 1;
+
+        while (idx < m) {
+            charComparisons++;
+            if (needle.charAt(idx) == needle.charAt(prevLen)) {
+                prevLen++;
+                border[idx] = prevLen;
+                idx++;
+            } else {
+                if (prevLen != 0) {
+                    prevLen = border[prevLen - 1];
+                } else {
+                    border[idx] = 0;
+                    idx++;
+                }
+            }
+        }
+        return border;
+    }
+
+
 
 }
